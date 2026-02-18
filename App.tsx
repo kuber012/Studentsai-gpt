@@ -1,3 +1,5 @@
+import { auth } from "./firebase";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import React, { useState, useRef, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Send, Image as ImageIcon, Loader2, Sparkles, BookOpen } from 'lucide-react';
@@ -16,7 +18,14 @@ const INITIAL_MESSAGE: ChatMessage = {
 };
 
 export default function App() {
+  
   const [messages, setMessages] = useState<ChatMessage[]>([INITIAL_MESSAGE]);
+
+  const handleLogin = async () => {
+  const provider = new GoogleAuthProvider();
+  await signInWithPopup(auth, provider);
+};
+  
   const [inputText, setInputText] = useState('');
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [isTyping, setIsTyping] = useState(false);
@@ -121,6 +130,10 @@ export default function App() {
 
   return (
     <div className="flex flex-col h-screen bg-gray-50">
+
+      <button onClick={handleLogin}>
+  Login with Google
+</button>
       
       {/* Header */}
       <header className="bg-white border-b border-gray-200 py-3 px-4 flex items-center justify-between shadow-sm flex-shrink-0">
